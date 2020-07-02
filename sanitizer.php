@@ -31,7 +31,7 @@ class FieldsManager
             if($this->is_array($type))
             {
                 $new_type = substr($type, 0, -2);
-                print $new_type."\n";
+                // print $new_type."\n";
                 $current_values[$key] = [];// new $type($values[$key]);
                 foreach($values[$key] as $elem)
                 {
@@ -47,7 +47,7 @@ class FieldsManager
             }
 
             $current_values[$key] = (new $type($values[$key]))->get_value();
-            print $current_values[$key]."\n";
+            // print $current_values[$key]."\n";
         }
         return $current_values;
     }
@@ -203,10 +203,9 @@ $float2 = new FloatField("123123");
 // print $float2->get_float()."\n";
 // var_dump(get_object_vars($phone));
 
-$structure1 = ['foo'=>'IntegerField', 'jopa'=>['foo2'=>'StringField', 'bar2'=>'FloatField'], 'bar'=>'StringField', 'qwe'=>'IntegerField[]'];
-$values1 = ['foo'=>'123', 'bar'=>'foobar', 'jopa'=>['foo2'=>"argh", 'bar2'=>"228.13"], 'qwe'=>[1, 2, 3, 4]];
-$manager = new FieldsManager($structure1, $values1);
-$manager->dump_values();
+
+// $manager->dump_values();
+//print serialize($manager->get_sanitized_object())."\n";
 
 //$integer2 = new $structure1['foo']("123");
 //print $integer2->get_integer()."\n";
