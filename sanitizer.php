@@ -7,14 +7,17 @@ class FieldsManager
 
     public function create_structure($structure)
     {
-        // need to check if structure is valid
+        if(!is_array($structure))
+        {
+            throw new InvalidArgumentException("Structure must be array.");
+        }
         $this->structure = $structure;
     }
 
     public function __construct($structure, $values)
     {
         $this->create_structure($structure);
-        $this->values = $this->create_array($structure, $values);
+        $this->values = $this->create_array($structure, json_decode($values, true, 10));
 
     }
 
@@ -25,9 +28,17 @@ class FieldsManager
 
     private function create_array($structure, $values)
     {
+        if($values == null)
+        {
+            throw new InvalidArgumentException("Invalid json.");
+        }
         $current_values=[];
         foreach ($structure as $key=>$type)
         {
+            if(!array_key_exists($key, $values))
+            {
+                throw new UnexpectedValueException("Json doesn't have declared in the structure ".$key." key.");
+            }
             if($this->is_array($type))
             {
                 $new_type = substr($type, 0, -2);
@@ -186,29 +197,6 @@ class RussianPhoneNumber
 
 }
 
-
-$phone = new RussianPhoneNumber("8 (800) 555 35-35");
-$phone2 = new RussianPhoneNumber("88005553535");
-$string1 = new StringField(123);
-$integer1 = new IntegerField("-2312312312312312345");
-$float1 = new FloatField("228.228000000000000000000000000000000000000000000000000000000000000001");
-$float2 = new FloatField("123123");
-
-
-// print $phone->get_number()."\n";
-// print $phone->get_number()."\n";
-// print $string1->get_string()."\n";
-// print $integer1->get_integer()."\n";
-// print $float1->get_float()."\n";
-// print $float2->get_float()."\n";
-// var_dump(get_object_vars($phone));
-
-
-// $manager->dump_values();
-//print serialize($manager->get_sanitized_object())."\n";
-
-//$integer2 = new $structure1['foo']("123");
-//print $integer2->get_integer()."\n";
 ?>
 
 
